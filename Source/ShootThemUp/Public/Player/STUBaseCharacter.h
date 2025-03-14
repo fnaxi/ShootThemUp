@@ -22,6 +22,10 @@ protected:
 	/** Third-person camera for this character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	class UCameraComponent* CameraComponent;
+
+	/** Spring arm component for camera. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	class USpringArmComponent* SpringArmComponent;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
