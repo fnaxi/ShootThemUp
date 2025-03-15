@@ -20,7 +20,7 @@ public:
 	float RunModifier = 2.0f;
 	
 	//BEGIN UMovementComponent Interface
-	ENGINE_API virtual float GetMaxSpeed() const override;
+	virtual float GetMaxSpeed() const override;
 	//END UMovementComponent Interface
 	
 };
