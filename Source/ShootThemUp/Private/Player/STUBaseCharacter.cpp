@@ -5,7 +5,6 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -61,14 +60,31 @@ bool ASTUBaseCharacter::IsRunning() const
 	return bWantsToRun && bIsMovingForward && !GetVelocity().IsZero();
 }
 
+float ASTUBaseCharacter::GetMovementDirection() const
+{
+	if (GetVelocity().IsZero()) return 0.0f;
+	
+	const UE::Math::TVector<double> VelocityNormal = GetVelocity().GetSafeNormal();
+	
+	const double AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
+	const UE::Math::TVector<double> CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
+
+	const double Degrees = FMath::RadiansToDegrees(AngleBetween);
+	
+	return CrossProduct.IsZero() ? Degrees : Degrees * FMath::Sign(CrossProduct.Z);
+}
+
 void ASTUBaseCharacter::MoveForward(float Amount)
 {
 	bIsMovingForward = Amount > 0.0f;
+	
+	if (Amount == 0.0f) return;
 	AddMovementInput(GetActorForwardVector(), Amount);
 }
 
 void ASTUBaseCharacter::MoveRight(float Amount)
 {
+	if (Amount == 0.0f) return;
 	AddMovementInput(GetActorRightVector(), Amount);
 }
 

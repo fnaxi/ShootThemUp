@@ -40,6 +40,10 @@ public:
 	/** Getter for animation blueprint. */
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsRunning() const;
+
+	/** Get direction of movement to use right animations in blueprint. */
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	float GetMovementDirection() const;
 	
 private:
 	/** Move forward or backward. */
