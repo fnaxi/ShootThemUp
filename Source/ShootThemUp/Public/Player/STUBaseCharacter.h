@@ -16,7 +16,7 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ASTUBaseCharacter();
+	ASTUBaseCharacter(const FObjectInitializer& ObjInit);
 
 protected:
 	/** Third-person camera for this character. */
@@ -30,18 +30,34 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	/** Getter for animation blueprint. */
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	bool IsRunning() const;
+	
 private:
 	/** Move forward or backward. */
 	void MoveForward(float Amount);
 
 	/** Move right or left. */
 	void MoveRight(float Amount);
+
+	/** Calls when character wants to run. */
+	void StartRunning();
+
+	/** Calls when character stopped to run. */
+	void StopRunning();
+	
+	/** Is character running currently or not. */
+	bool bWantsToRun = false;
+
+	/** Is character moving forward. */
+	bool bIsMovingForward = false;
 	
 };
