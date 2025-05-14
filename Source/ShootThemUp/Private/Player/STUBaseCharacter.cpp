@@ -5,6 +5,8 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
+#include "Components/STUHealthComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -20,13 +22,20 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+
+	HealthComponent = CreateDefaultSubobject<USTUHealthComponent>("HealthComponent");
+	
+	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
+	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
 void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	check(HealthComponent);
+	check(HealthTextComponent);
 }
 
 // Called every frame
@@ -34,6 +43,8 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const float Health = HealthComponent->GetHealth();
+	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
 // Called to bind functionality to input
@@ -64,10 +75,12 @@ float ASTUBaseCharacter::GetMovementDirection() const
 {
 	if (GetVelocity().IsZero()) return 0.0f;
 	
-	const UE::Math::TVector<double> VelocityNormal = GetVelocity().GetSafeNormal();
+	typedef UE::Math::TVector<double> FVectorDouble;
+	
+	const FVectorDouble VelocityNormal = GetVelocity().GetSafeNormal();
 	
 	const double AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
-	const UE::Math::TVector<double> CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
+	const FVectorDouble CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
 
 	const double Degrees = FMath::RadiansToDegrees(AngleBetween);
 	

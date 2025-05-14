@@ -23,9 +23,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	class UCameraComponent* CameraComponent;
 
-	/** Spring arm component for camera. */
+	/** Component that holds camera. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	class USpringArmComponent* SpringArmComponent;
+
+	/** Health realization for the character. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	class USTUHealthComponent* HealthComponent;
+
+	/** A component that renders a health above the head. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	class UTextRenderComponent* HealthTextComponent;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
