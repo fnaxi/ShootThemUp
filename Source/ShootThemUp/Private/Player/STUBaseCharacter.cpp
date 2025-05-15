@@ -8,6 +8,9 @@
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Engine/DamageEvents.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogBaseCharacter, All, All)
 
 // Sets default values
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
@@ -34,8 +37,8 @@ void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(HealthComponent);
-	check(HealthTextComponent);
+	check(HealthComponent)
+	check(HealthTextComponent)
 }
 
 // Called every frame

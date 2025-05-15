@@ -7,7 +7,8 @@
 #include "STUBaseCharacter.generated.h"
 
 /**
- * 
+ * Provides shared functionality such as movement, health management,
+ * animations, and weapon handling for both player-controlled and AI-controlled characters.
  */
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
