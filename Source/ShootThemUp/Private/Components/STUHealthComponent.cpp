@@ -31,6 +31,5 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 	AController* InstigatedBy, AActor* DamageCauser)
 {
 	Health -= Damage;
-	UE_LOG(LogHealthComponent, Verbose, TEXT("Damage: %f"), Damage)
 }
 
