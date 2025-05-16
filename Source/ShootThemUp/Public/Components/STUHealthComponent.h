@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "STUHealthComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnDeath)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
+
 /**
  * 
  */
@@ -20,6 +23,16 @@ public:
 	
 	/** Get character's health. */
 	float GetHealth() const { return Health; }
+
+	/** Check is character dead or no. */
+	UFUNCTION(BlueprintCallable)
+	bool IsDead() const { return Health <= 0; }
+
+	/** On death event. */
+	FOnDeath OnDeath;
+
+	/** Event when health is being changed. */
+	FOnHealthChanged OnHealthChanged;
 	
 protected:
 	// Called when the game starts

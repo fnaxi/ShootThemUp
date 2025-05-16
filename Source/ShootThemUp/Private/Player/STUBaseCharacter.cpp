@@ -17,7 +17,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	: Super(ObjInit.SetDefaultSubobjectClass<USTUCharacterMovementComponent>(CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
 	SpringArmComponent->SetupAttachment(GetRootComponent());
@@ -39,15 +39,17 @@ void ASTUBaseCharacter::BeginPlay()
 
 	check(HealthComponent)
 	check(HealthTextComponent)
+	check(GetCharacterMovement())
+
+	OnHealthChanged(HealthComponent->GetHealth());
+	HealthComponent->OnDeath.AddUObject(this, &ASTUBaseCharacter::OnDeath);
+	HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 }
 
 // Called every frame
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	const float Health = HealthComponent->GetHealth();
-	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
 // Called to bind functionality to input
@@ -112,5 +114,19 @@ void ASTUBaseCharacter::StartRunning()
 void ASTUBaseCharacter::StopRunning()
 {
 	bWantsToRun = false;
+}
+
+void ASTUBaseCharacter::OnDeath()
+{
+	UE_LOG(LogBaseCharacter, Display, TEXT("Player %s is dead"), *GetName())
+
+	PlayAnimMontage(DeathAnimMontage);
+	GetCharacterMovement()->DisableMovement();
+	SetLifeSpan(5.0f);
+}
+
+void ASTUBaseCharacter::OnHealthChanged(float Health)
+{
+	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 

@@ -35,7 +35,11 @@ protected:
 	/** A component that renders a health above the head. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	class UTextRenderComponent* HealthTextComponent;
-	
+
+	/** Animation to play when character dies. */
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* DeathAnimMontage;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -72,5 +76,11 @@ private:
 
 	/** Is character moving forward. */
 	bool bIsMovingForward = false;
+
+	/** Calls when character died. */
+	void OnDeath();
+
+	/** Calls when health is changed. */
+	void OnHealthChanged(float Health);
 	
 };
