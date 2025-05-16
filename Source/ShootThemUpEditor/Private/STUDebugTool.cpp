@@ -5,6 +5,9 @@
 
 #include "imgui.h"
 #include "ImGuiModule.h"
+#include "Components/STUHealthComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/STUBaseCharacter.h"
 
 // Sets default values
 ASTUDebugTool::ASTUDebugTool()
@@ -19,6 +22,78 @@ void ASTUDebugTool::BeginPlay()
 	Super::BeginPlay();
 
 	FImGuiModule::Get().SetInputMode(false);
+}
+
+void ASTUDebugTool::UnrealImGuiText(FString Text)
+{
+	ImGui::Text(TCHAR_TO_ANSI(*Text));
+}
+
+// Called every frame
+void ASTUDebugTool::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	bool bIsInputMode = FImGuiModule::Get().IsInputMode();
+	ASTUBaseCharacter* Character = Cast<ASTUBaseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	USTUHealthComponent* HealthComponent = nullptr;
+	if (Character)
+	{
+		HealthComponent = Character->GetComponentByClass<USTUHealthComponent>();
+	}
+	
+	static bool bDebugMovement = false;
+	static bool bDebugHealth = false;
+	bool bIsRenderingAnyDebugOverlay = bDebugMovement || bDebugHealth;
+	if (!bIsInputMode && bIsRenderingAnyDebugOverlay)
+	{
+		ImGui::SetNextWindowBgAlpha(0.35f);
+		
+		ImGui::Begin("Overlay", nullptr, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoFocusOnAppearing |
+			ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+		ImGui::SetWindowPos(ImVec2(25.0f, 65.0f));
+		ImGui::SetWindowCollapsed(bIsInputMode);
+		if (Character && !bIsInputMode)
+		{
+			if (bDebugMovement)
+			{
+				UnrealImGuiText(TEXT("Velocity: ") + Character->GetVelocity().ToString());
+				FString CurrentState = Character->IsRunning() ? TEXT("Running") : (
+					Character->GetVelocity().IsZero() ? TEXT("Idle") : TEXT("Walking")
+				);
+				UnrealImGuiText(FString("State: ") + CurrentState );
+				UnrealImGuiText(TEXT("Movement Direction: ") + FString::SanitizeFloat(Character->GetMovementDirection()));
+			}
+			if (bDebugHealth && HealthComponent)
+			{
+				UnrealImGuiText(TEXT("Health: ") + FString::SanitizeFloat(HealthComponent->GetHealth()));
+				UnrealImGuiText( FString("Is Dead: ") + (HealthComponent->IsDead() ? TEXT("True") : TEXT("False")) );
+			}
+		}
+		ImGui::End();
+	}
+	ImGui::Begin("STU Debug Tool (Shift+X)", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+	{
+		ImGui::SetNextWindowBgAlpha(0.80f);
+		ImGui::SetWindowCollapsed(!bIsInputMode);
+		StyleImGui();
+		ImGui::BeginTabBar("Main");
+		ImGui::SetWindowPos(ImVec2(25, 45));
+		ImGui::SetWindowSize(ImVec2(890, 390));
+		if (ImGui::BeginTabItem("Character"))
+		{
+			if (Character)
+			{
+				UnrealImGuiText(TEXT("Name: ") + Character->GetName());
+				ImGui::Separator();
+				ImGui::Checkbox("Debug Movement?", &bDebugMovement);
+				ImGui::Checkbox("Debug Health?", &bDebugHealth);
+			}
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
+	ImGui::End();
 }
 
 void ASTUDebugTool::StyleImGui()
@@ -75,35 +150,5 @@ void ASTUDebugTool::StyleImGui()
 	Colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 	Colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 	Colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-	
-	Style->Alpha = 0.8f;
-}
-
-void ASTUDebugTool::DrawImGui()
-{
-	ImGui::BeginTabBar("STU_DEBUG_TOOL_MAIN");
-	
-	ImGui::SetWindowPos(ImVec2(25, 45));
-	ImGui::SetWindowSize(ImVec2(890, 390));
-	
-	if (ImGui::BeginTabItem("Health"))
-	{
-		ImGui::EndTabItem();
-	}
-	ImGui::EndTabBar();
-}
-
-// Called every frame
-void ASTUDebugTool::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	
-	ImGui::Begin("STU Debug Tool (Shift+X)", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-	{
-		ImGui::SetWindowCollapsed( !FImGuiModule::Get().IsInputMode() );
-		StyleImGui();
-		DrawImGui();
-	}
-	ImGui::End();
 }
 

@@ -27,10 +27,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	/** Calls ImGui::Text() and wraps it around FString type. */
+	static void UnrealImGuiText(FString Text);
+	
 	/** Setup style for ImGui. */
 	void StyleImGui();
-
-	/** Draw ImGui UI on top. */
-	void DrawImGui();
 	
 };
