@@ -86,8 +86,18 @@ void ASTUDebugTool::Tick(float DeltaTime)
 			{
 				UnrealImGuiText(TEXT("Name: ") + Character->GetName());
 				ImGui::Separator();
+
 				ImGui::Checkbox("Debug Movement?", &bDebugMovement);
 				ImGui::Checkbox("Debug Health?", &bDebugHealth);
+				ImGui::Separator();
+				
+				static int DamageAmount = 25.0f;
+				if (ImGui::Button("Take Damage"))
+				{
+					UGameplayStatics::ApplyDamage(Character, DamageAmount, nullptr, this, nullptr);
+				}
+				ImGui::SameLine();
+				ImGui::SliderInt("", &DamageAmount, 0, 100);
 			}
 			ImGui::EndTabItem();
 		}

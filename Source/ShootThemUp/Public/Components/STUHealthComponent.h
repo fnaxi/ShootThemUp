@@ -26,7 +26,7 @@ public:
 
 	/** Check is character dead or no. */
 	UFUNCTION(BlueprintCallable)
-	bool IsDead() const { return Health <= 0; }
+	bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
 	/** On death event. */
 	FOnDeath OnDeath;
@@ -42,10 +42,35 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "1000.0"))
 	float MaxHealth = 100.0f;
 
+	/** Turn auto heal on or no. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+	bool bAutoHeal = true;
+
+	/** Frequency of healing. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
+	float HealUpdateTime = 1.0f;
+
+	/** With what time start healing character after taking damage. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
+	float HealDelay = 3.0f;
+
+	/** Character healing amount. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
+	float HealModifier = 5.0f;
+	
 private:
+	/** Set new character's health, ensure it's not bigger than MaxHealth and broadcast OnHealthChanged delegate. */
+	void SetHealth(float NewHealth);
+	
 	/** Health character have. */
 	float Health = 0.0f;
 
+	/** Timer to heal character. */
+	FTimerHandle HealTimerHandle;
+	
+	/** Calls in HealTimerHandle to heal character. */
+	void HealUpdate();
+	
 	/** Handle any damage that can be taken to character. */
 	UFUNCTION()
 	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
