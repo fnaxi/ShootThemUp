@@ -44,7 +44,9 @@ void ASTUDebugTool::Tick(float DeltaTime)
 	
 	static bool bDebugMovement = false;
 	static bool bDebugHealth = false;
-	bool bIsRenderingAnyDebugOverlay = bDebugMovement || bDebugHealth;
+	bool bIsDebuggingMovement = bDebugMovement && Character;
+	bool bIsDebuggingHealth = bDebugHealth && Character;
+	bool bIsRenderingAnyDebugOverlay = bIsDebuggingMovement || bIsDebuggingHealth;
 	if (!bIsInputMode && bIsRenderingAnyDebugOverlay)
 	{
 		ImGui::SetNextWindowBgAlpha(0.35f);
@@ -82,15 +84,21 @@ void ASTUDebugTool::Tick(float DeltaTime)
 		ImGui::SetWindowSize(ImVec2(890, 390));
 		if (ImGui::BeginTabItem("Character"))
 		{
+			FString CharacterName = "NO_ACTIVE_CHARACTER";
 			if (Character)
 			{
-				UnrealImGuiText(TEXT("Name: ") + Character->GetName());
-				ImGui::Separator();
+				CharacterName = Character->GetName();
+			}
+			
+			UnrealImGuiText(TEXT("Name: ") + CharacterName);
+			ImGui::Separator();
 
-				ImGui::Checkbox("Debug Movement?", &bDebugMovement);
-				ImGui::Checkbox("Debug Health?", &bDebugHealth);
-				ImGui::Separator();
-				
+			ImGui::Checkbox("Debug Movement?", &bDebugMovement);
+			ImGui::Checkbox("Debug Health?", &bDebugHealth);
+			ImGui::Separator();
+			
+			if (Character)
+			{
 				static int DamageAmount = 25.0f;
 				if (ImGui::Button("Take Damage"))
 				{

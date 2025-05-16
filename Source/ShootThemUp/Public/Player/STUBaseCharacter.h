@@ -39,7 +39,15 @@ protected:
 	/** Animation to play when character dies. */
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	UAnimMontage* DeathAnimMontage;
+	
+	/** A velocity when character will get damage. */
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	FVector2D LandedDamageVelocity = FVector2D(900.0f, 1200.0f);
 
+	/** What damage will get character after falling basing on LandedDamageVelocity. */
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -82,5 +90,9 @@ private:
 
 	/** Calls when health is changed. */
 	void OnHealthChanged(float Health);
+
+	/** Called upon landing after falling. */
+	UFUNCTION()
+	void OnGroundLanded(const FHitResult& Hit);
 	
 };
