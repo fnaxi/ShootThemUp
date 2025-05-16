@@ -40,12 +40,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	UAnimMontage* DeathAnimMontage;
 	
+	/** Time to destroy character mesh. */
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float LifeSpanOnDeath = 5.0f;
+	
 	/** A velocity when character will get damage. */
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FVector2D LandedDamageVelocity = FVector2D(900.0f, 1200.0f);
 
 	/** What damage will get character after falling basing on LandedDamageVelocity. */
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 	
 	// Called when the game starts or when spawned

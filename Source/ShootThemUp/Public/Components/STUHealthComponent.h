@@ -6,8 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "STUHealthComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnDeath)
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
+DECLARE_MULTICAST_DELEGATE(FOnDeathSignature)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float);
 
 /**
  * 
@@ -29,10 +29,10 @@ public:
 	bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
 	/** On death event. */
-	FOnDeath OnDeath;
+	FOnDeathSignature OnDeath;
 
 	/** Event when health is being changed. */
-	FOnHealthChanged OnHealthChanged;
+	FOnHealthChangedSignature OnHealthChanged;
 	
 protected:
 	// Called when the game starts
