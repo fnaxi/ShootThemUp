@@ -83,7 +83,7 @@ void ASTUDebugTool::DrawImGui()
 {
 	ImGui::BeginTabBar("STU_DEBUG_TOOL_MAIN");
 	
-	ImGui::SetWindowPos(ImVec2(25, 25));
+	ImGui::SetWindowPos(ImVec2(25, 45));
 	ImGui::SetWindowSize(ImVec2(890, 390));
 	
 	if (ImGui::BeginTabItem("Health"))

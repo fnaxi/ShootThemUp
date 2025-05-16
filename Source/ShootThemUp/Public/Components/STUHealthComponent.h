@@ -25,7 +25,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	/** Max possible health for the character. TODO: Why BlueprintReadWrite? */
+	/** Max possible health for the character. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "1000.0"))
 	float MaxHealth = 100.0f;
 
