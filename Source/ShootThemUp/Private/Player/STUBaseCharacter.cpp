@@ -6,10 +6,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUHealthComponent.h"
+#include "Components/STUWeaponComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine/DamageEvents.h"
-#include "Weapon/STUBaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseCharacter, All, All)
 
@@ -33,6 +33,8 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 	HealthTextComponent->bOwnerNoSee = true;
+
+	WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>("WeaponComponent");
 }
 
 // Called when the game starts or when spawned
@@ -49,8 +51,6 @@ void ASTUBaseCharacter::BeginPlay()
 	HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 
 	LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroundLanded);
-
-	SpawnWeapon();
 }
 
 // Called every frame
@@ -64,6 +64,7 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	check(PlayerInputComponent)
+	check(WeaponComponent)
 
 	// Movement
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
@@ -77,6 +78,7 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::StartRunning);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::StopRunning);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Fire);
 }
 
 bool ASTUBaseCharacter::IsRunning() const
@@ -154,17 +156,5 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
 	
 	UE_LOG(LogBaseCharacter, Display, TEXT("Fall Damage: %f"), FallVelocityZ);
 	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
-}
-
-void ASTUBaseCharacter::SpawnWeapon()
-{
-	if (!GetWorld()) return;
-	
-	ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass);
-	if (Weapon)
-	{
-		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
-		Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
-	}
 }
 

@@ -15,6 +15,9 @@ public:
 	// Sets default values for this actor's properties
 	ASTUBaseWeapon();
 
+	/** Start a shoot. */
+	virtual void Fire();
+
 protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
