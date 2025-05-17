@@ -51,6 +51,10 @@ protected:
 	/** What damage will get character after falling basing on LandedDamageVelocity. */
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
+
+	/** Weapon to spawn. */
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<class ASTUBaseWeapon> WeaponClass;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -98,5 +102,8 @@ private:
 	/** Called upon landing after falling. */
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);
+
+	/** Spawn weapon and attach it to socket character's mesh have. */
+	void SpawnWeapon();
 	
 };
