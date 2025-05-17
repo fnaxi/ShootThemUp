@@ -22,8 +22,19 @@ protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USkeletalMeshComponent* WeaponMesh;
-	
+
+	/** A socket of muzzle. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FName MuzzleSocketName = "MuzzleSocket";
+
+	/** Max distance of trace. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float TraceMaxDistance = 1500.0f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	/** Make a shoot. */
+	void MakeShoot();
+	
 };
