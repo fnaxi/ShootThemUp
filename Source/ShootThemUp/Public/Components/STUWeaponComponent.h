@@ -22,24 +22,45 @@ public:
 	void StartFire();
 	void StopFire();
 
+	/** Equip next weapon. */
+	void NextWeapon();
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
-	/** Weapon to spawn. */
+	/** Weapons to spawn for the character. */
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TSubclassOf<class ASTUBaseWeapon> WeaponClass;
+	TArray<TSubclassOf<class ASTUBaseWeapon>> WeaponClasses;
 
-	/** Socket to attach weapon to. */
+	/** Socket to attach weapon to equip. */
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	FName WeaponAttachPointName = "WeaponSocket";
+	FName WeaponEquipSocketName = "WeaponSocket";
+	
+	/** Socket to attach weapon to armory. */
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FName WeaponArmorySocketName = "ArmorySocket";
 	
 private:
 	/** Current weapon character have. */
 	UPROPERTY()
 	ASTUBaseWeapon* CurrentWeapon = nullptr;
-	
+
+	/** Weapons the character have. */
+	UPROPERTY()
+	TArray<ASTUBaseWeapon*> Weapons;
+
+	/** An index of weapon that is current one now. */
+	int32 CurrentWeaponIndex = 0;
+
+	/** Attach weapon to one of the sockets character's mesh have. */
+	void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
+
 	/** Spawn weapon and attach it to socket character's mesh have. */
-	void SpawnWeapon();
+	void SpawnWeapons();
+
+	/** Equip weapon of set index. */
+	void EquipWeapon(int32 WeaponIndex);
 	
 };
