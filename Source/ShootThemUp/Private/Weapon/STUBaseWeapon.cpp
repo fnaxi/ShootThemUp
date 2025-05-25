@@ -4,6 +4,8 @@
 #include "Weapon/STUBaseWeapon.h"
 
 #include "GameFramework/Character.h"
+#include "Player/STUBaseCharacter.h"
+#include "Engine/DamageEvents.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All)
 
@@ -32,6 +34,15 @@ void ASTUBaseWeapon::BeginPlay()
 	check(WeaponMesh)
 }
 
+void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
+{
+	AActor* DamagedActor = HitResult.GetActor();
+	if (DamagedActor)
+	{
+		DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
+	}
+}
+
 void ASTUBaseWeapon::MakeShoot()
 {
 	if (!GetWorld()) return;
@@ -43,6 +54,8 @@ void ASTUBaseWeapon::MakeShoot()
 	MakeHit(HitResult, TraceStart, TraceEnd);
 	if (HitResult.bBlockingHit)
 	{
+		MakeDamage(HitResult);
+		
 		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Purple, false, 3.0f, 0, 3.0f);
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Orange, false, 5.0f);
 	}
