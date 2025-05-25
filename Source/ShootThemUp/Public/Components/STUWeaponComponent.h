@@ -42,6 +42,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName WeaponArmorySocketName = "ArmorySocket";
 	
+	/** Animation montage to play when equipping new weapon. */
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* EquipAnimMontage;
+	
 private:
 	/** Current weapon character have. */
 	UPROPERTY()
@@ -62,5 +66,14 @@ private:
 
 	/** Equip weapon of set index. */
 	void EquipWeapon(int32 WeaponIndex);
+
+	/** Play animation montage on character. */
+	void PlayAnimMontage(UAnimMontage* Animation);
+
+	/** Initialize animations for the character. */
+	void InitAnimations();
+
+	/** Called when equip animation montage was finished. */
+	void OnEquipFinished(USkeletalMeshComponent* MeshComponent);
 	
 };
