@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "STUBaseWeapon.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 {
@@ -36,5 +39,20 @@ protected:
 
 	/** Make a shoot. */
 	void MakeShoot();
+
+	/** Get player controller that holds this weapon. */
+	APlayerController* GetPlayerController() const;
+
+	/** Get view point of character that holds this weapon. */
+	bool GetPlayerViewPoint(FVector& OutViewLocation, FRotator& OutViewRotation) const;
+
+	/** Get world location of weapon muzzle socket. */
+	FVector GetMuzzleWorldLocation() const;
+
+	/** Get info about start and end locations of trace for shooting. */
+	bool GetTraceData(FVector& OutTraceStart, FVector& OutTraceEnd) const;
+
+	/** Make a hit using trace-cast. */
+	void MakeHit(FHitResult& OutHitResult, const FVector& OutTraceStart, const FVector& OutTraceEnd);
 	
 };
