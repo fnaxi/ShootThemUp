@@ -7,13 +7,18 @@
 #include "ImGuiModule.h"
 #include "Components/STUHealthComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Player/STUBaseCharacter.h"
 
 // Sets default values
 ASTUDebugTool::ASTUDebugTool()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+#if UE_BUILD_SHIPPING
+	PrimaryActorTick.bCanEverTick = false;
+#else
 	PrimaryActorTick.bCanEverTick = true;
+#endif
 }
 
 // Called when the game starts or when spawned
@@ -21,7 +26,9 @@ void ASTUDebugTool::BeginPlay()
 {
 	Super::BeginPlay();
 
+#if !UE_BUILD_SHIPPING
 	FImGuiModule::Get().SetInputMode(false);
+#endif
 }
 
 void ASTUDebugTool::UnrealImGuiText(FString Text)
@@ -34,6 +41,7 @@ void ASTUDebugTool::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+#if !UE_BUILD_SHIPPING
 	bool bIsInputMode = FImGuiModule::Get().IsInputMode();
 	ASTUBaseCharacter* Character = Cast<ASTUBaseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	USTUHealthComponent* HealthComponent = nullptr;
@@ -44,9 +52,8 @@ void ASTUDebugTool::Tick(float DeltaTime)
 	
 	static bool bDebugMovement = false;
 	static bool bDebugHealth = false;
-	bool bIsDebuggingMovement = bDebugMovement && Character;
-	bool bIsDebuggingHealth = bDebugHealth && Character;
-	bool bIsRenderingAnyDebugOverlay = bIsDebuggingMovement || bIsDebuggingHealth;
+	static bool bDebugAimOffset = false;
+	bool bIsRenderingAnyDebugOverlay = Character && (bDebugMovement || bDebugHealth || bDebugAimOffset);
 	if (!bIsInputMode && bIsRenderingAnyDebugOverlay)
 	{
 		ImGui::SetNextWindowBgAlpha(0.35f);
@@ -55,7 +62,7 @@ void ASTUDebugTool::Tick(float DeltaTime)
 			ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
 		ImGui::SetWindowPos(ImVec2(25.0f, 65.0f));
 		ImGui::SetWindowCollapsed(bIsInputMode);
-		if (Character && !bIsInputMode)
+		if (!bIsInputMode)
 		{
 			if (bDebugMovement)
 			{
@@ -70,6 +77,10 @@ void ASTUDebugTool::Tick(float DeltaTime)
 			{
 				UnrealImGuiText(TEXT("Health: ") + FString::SanitizeFloat(HealthComponent->GetHealth()));
 				UnrealImGuiText( FString("Is Dead: ") + (HealthComponent->IsDead() ? TEXT("True") : TEXT("False")) );
+			}
+			if (bDebugAimOffset)
+			{
+				UnrealImGuiText(TEXT("AimOffset: ") + Character->GetBaseAimRotation().ToString());
 			}
 		}
 		ImGui::End();
@@ -95,6 +106,7 @@ void ASTUDebugTool::Tick(float DeltaTime)
 
 			ImGui::Checkbox("Debug Movement?", &bDebugMovement);
 			ImGui::Checkbox("Debug Health?", &bDebugHealth);
+			ImGui::Checkbox("Debug Aim Offset?", &bDebugAimOffset);
 			ImGui::Separator();
 			
 			if (Character)
@@ -109,13 +121,50 @@ void ASTUDebugTool::Tick(float DeltaTime)
 			}
 			ImGui::EndTabItem();
 		}
+		if (ImGui::BeginTabItem("Misc"))
+		{
+			FString MapName = "INVALID_LEVEL";
+			if (GetWorld())
+			{
+				MapName = GetWorld()->GetMapName();
+			}
+			UnrealImGuiText(TEXT("MapName: ") + MapName);
+		}
 		ImGui::EndTabBar();
 	}
 	ImGui::End();
+
+	if (Character)
+	{
+		if (bDebugMovement)
+		{
+			// Forward vector
+			FVector ForwardVectorEnd = Character->GetActorLocation() + (Character->GetActorForwardVector() * 500.0f);
+			DrawDebugDirectionalArrow(GetWorld(), Character->GetActorLocation(), ForwardVectorEnd, 2.0f, FColor::Orange, false, -1, 0, 4.0f);
+
+			// Velocity vector
+			FVector NormalizedCharacterVelocity = Character->GetVelocity();
+			UKismetMathLibrary::Vector_Normalize(NormalizedCharacterVelocity);
+			
+			FVector VelocityVectorEnd = Character->GetActorLocation() + (NormalizedCharacterVelocity * 500.0f);
+			DrawDebugDirectionalArrow(GetWorld(), Character->GetActorLocation(), VelocityVectorEnd, 2.0f, FColor::Magenta, false, -1, 0, 4.0f);
+		}
+		if (bDebugAimOffset)
+		{
+			FRotator AimRotation = Character->GetBaseAimRotation();
+			FVector OffsetEndLocation = (UKismetMathLibrary::GetForwardVector(AimRotation) * 1200.0f) + Character->GetActorLocation();
+			if (GetWorld())
+			{
+				DrawDebugLine(GetWorld(), Character->GetActorLocation(), OffsetEndLocation, FColor::Yellow, false, -1, 0, 3.0f);
+			}
+		}
+	}
+#endif
 }
 
 void ASTUDebugTool::StyleImGui()
 {
+#if !UE_BUILD_SHIPPING
 	ImGuiStyle* Style = &ImGui::GetStyle();
 	
 	ImVec4* Colors = Style->Colors;
@@ -168,5 +217,6 @@ void ASTUDebugTool::StyleImGui()
 	Colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 	Colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 	Colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
+#endif
 }
 
