@@ -18,8 +18,9 @@ public:
 	// Sets default values for this component's properties
 	USTUWeaponComponent();
 
-	/** Start a shoot. */
-	void Fire();
+	/** Start or stop shooting. */
+	void StartFire();
+	void StopFire();
 
 protected:
 	// Called when the game starts

@@ -19,11 +19,15 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 	SetRootComponent(WeaponMesh);
 }
 
-void ASTUBaseWeapon::Fire()
+void ASTUBaseWeapon::StartFire()
 {
-	UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"))
-
 	MakeShoot();
+	GetWorldTimerManager().SetTimer(ShootTimerHandle, this, &ASTUBaseWeapon::MakeShoot, TimeBetweenShots, true);
+}
+
+void ASTUBaseWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(ShootTimerHandle);
 }
 
 // Called when the game starts or when spawned
@@ -94,8 +98,10 @@ bool ASTUBaseWeapon::GetTraceData(FVector& OutTraceStart, FVector& OutTraceEnd) 
 	FRotator ViewRotation;
 	if (!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
 
-	const FVector ShootDirection = ViewRotation.Vector();
+	// TODO: Make a low-health modifier to multiply BulletSpread on it, so when character has low health it's harder to shoot
 	OutTraceStart = ViewLocation;
+	const float HalfRad = FMath::DegreesToRadians(BulletSpread);
+	const FVector ShootDirection = FMath::VRandCone(ViewRotation.Vector(), HalfRad);
 	OutTraceEnd = OutTraceStart + ShootDirection * TraceMaxDistance;
 
 	return true;

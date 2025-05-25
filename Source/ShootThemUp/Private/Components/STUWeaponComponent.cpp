@@ -16,11 +16,19 @@ USTUWeaponComponent::USTUWeaponComponent()
 	// ...
 }
 
-void USTUWeaponComponent::Fire()
+void USTUWeaponComponent::StartFire()
 {
 	if (CurrentWeapon)
 	{
-		CurrentWeapon->Fire();
+		CurrentWeapon->StartFire();
+	}
+}
+
+void USTUWeaponComponent::StopFire()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StopFire();
 	}
 }
 

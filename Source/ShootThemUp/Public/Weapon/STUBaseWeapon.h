@@ -18,8 +18,9 @@ public:
 	// Sets default values for this actor's properties
 	ASTUBaseWeapon();
 
-	/** Start a shoot. */
-	virtual void Fire();
+	/** Start or stop shooting. */
+	virtual void StartFire();
+	virtual void StopFire();
 
 protected:
 	/** The mesh of that weapon. */
@@ -37,7 +38,15 @@ protected:
 	/** Damage this weapon makes. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float DamageAmount = 10.0f;
-	
+
+	/** Time between shots when fire button is hold. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float TimeBetweenShots = 0.1f;
+
+	/** A spread of the bullets in a cone. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float BulletSpread = 1.5f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -61,5 +70,9 @@ protected:
 
 	/** Make a hit using trace-cast. */
 	void MakeHit(FHitResult& OutHitResult, const FVector& OutTraceStart, const FVector& OutTraceEnd);
+
+private:
+	/** A timer for auto-shooting when fire button is hold. */
+	FTimerHandle ShootTimerHandle;
 	
 };
