@@ -28,6 +28,8 @@ void ASTULauncherWeapon::MakeShoot()
 	if (Projectile)
 	{
 		Projectile->SetShootDirection(Direction);
+		Projectile->SetOwner(GetOwner());
+		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

@@ -35,15 +35,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float TraceMaxDistance = 1500.0f;
 
-	/** Damage this weapon makes. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float DamageAmount = 10.0f;
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	/** Take damage to actor that was hit by trace. */
-	void MakeDamage(const FHitResult& HitResult);
 
 	/** Make a shoot. */
 	virtual void MakeShoot();

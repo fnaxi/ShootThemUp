@@ -5,6 +5,8 @@
 
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ASTUProjectile::ASTUProjectile()
@@ -14,6 +16,8 @@ ASTUProjectile::ASTUProjectile()
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	CollisionComponent->InitSphereRadius(5.0f);
+	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Block);
 	SetRootComponent(CollisionComponent);
 
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
@@ -28,7 +32,33 @@ void ASTUProjectile::BeginPlay()
 
 	check(MovementComponent)
 	check(MovementComponent->InitialSpeed != 0.0f && MovementComponent->ProjectileGravityScale == 0.0f)
+
+	check(CollisionComponent)
+	
 	MovementComponent->Velocity = ShootDirection * MovementComponent->InitialSpeed;
-	SetLifeSpan(5.0f);
+	CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
+	CollisionComponent->OnComponentHit.AddDynamic(this, &ASTUProjectile::OnProjectileHit);
+	
+	SetLifeSpan(LifeSeconds);
+}
+
+void ASTUProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (!GetWorld()) return;
+
+	MovementComponent->StopMovementImmediately();
+
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius, UDamageType::StaticClass(), { GetOwner() },
+		this, GetController(), bDoFullDamage);
+
+	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Emerald, false, 5.0f);
+	
+	Destroy();
+}
+
+AController* ASTUProjectile::GetController() const
+{
+	const APawn* Pawn = Cast<APawn>(GetOwner());
+	return Pawn ? Pawn->GetController() : nullptr;
 }
 

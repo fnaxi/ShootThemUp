@@ -28,6 +28,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float BulletSpread = 1.5f;
 	
+	/** Damage this weapon makes. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float DamageAmount = 10.0f;
+	
 	/** Make a shoot. */
 	virtual void MakeShoot() override;
 
@@ -38,4 +42,7 @@ private:
 	/** A timer for auto-shooting when fire button is hold. */
 	FTimerHandle ShootTimerHandle;
 
+	/** Take damage to actor that was hit by trace. */
+	void MakeDamage(const FHitResult& HitResult);
+	
 };

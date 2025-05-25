@@ -4,6 +4,7 @@
 #include "Weapon/STURifleWeapon.h"
 
 #include "DrawDebugHelpers.h"
+#include "Engine/DamageEvents.h"
 
 void ASTURifleWeapon::StartFire()
 {
@@ -51,5 +52,14 @@ bool ASTURifleWeapon::GetTraceData(FVector& OutTraceStart, FVector& OutTraceEnd)
 	OutTraceEnd = OutTraceStart + ShootDirection * TraceMaxDistance;
 
 	return true;
+}
+
+void ASTURifleWeapon::MakeDamage(const FHitResult& HitResult)
+{
+	AActor* DamagedActor = HitResult.GetActor();
+	if (DamagedActor)
+	{
+		DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
+	}
 }
 

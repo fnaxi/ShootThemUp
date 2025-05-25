@@ -30,11 +30,34 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	class UProjectileMovementComponent* MovementComponent;
 
+	/** Radius of damage sphere. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float DamageRadius = 200.0f;
+
+	/** Amount of damage in center of sphere. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float DamageAmount = 50.0f;
+
+	/** Do in all locations at sphere same damage or no. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	bool bDoFullDamage = false;
+
+	/** Time after which this projectile will be destroyed unless it hit something. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float LifeSeconds = 5.0f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
 	/** Direction to move projectile to. */
 	FVector ShootDirection;
+
+	/** Event called when a component hits (or is hit by) something solid. */
+	UFUNCTION()
+	void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	/** Get controller of this projectile. The owner of this projectile is a character.  */
+	AController* GetController() const;
 	
 };

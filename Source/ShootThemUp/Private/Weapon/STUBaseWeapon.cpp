@@ -35,15 +35,6 @@ void ASTUBaseWeapon::BeginPlay()
 	check(WeaponMesh)
 }
 
-void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
-{
-	AActor* DamagedActor = HitResult.GetActor();
-	if (DamagedActor)
-	{
-		DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
-	}
-}
-
 void ASTUBaseWeapon::MakeShoot()
 {
 }
