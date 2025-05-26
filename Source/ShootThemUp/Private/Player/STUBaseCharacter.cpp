@@ -43,9 +43,9 @@ void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(HealthComponent)
-	check(HealthTextComponent)
-	check(GetCharacterMovement())
+	check(HealthComponent);
+	check(HealthTextComponent);
+	check(GetCharacterMovement());
 
 	OnHealthChanged(HealthComponent->GetHealth());
 	HealthComponent->OnDeath.AddUObject(this, &ASTUBaseCharacter::OnDeath);

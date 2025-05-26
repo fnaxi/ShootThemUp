@@ -30,10 +30,10 @@ void ASTUProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(MovementComponent)
-	check(MovementComponent->InitialSpeed != 0.0f && MovementComponent->ProjectileGravityScale == 0.0f)
+	check(MovementComponent);
+	check(MovementComponent->InitialSpeed != 0.0f && MovementComponent->ProjectileGravityScale == 0.0f);
 
-	check(CollisionComponent)
+	check(CollisionComponent);
 	
 	MovementComponent->Velocity = ShootDirection * MovementComponent->InitialSpeed;
 	CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
