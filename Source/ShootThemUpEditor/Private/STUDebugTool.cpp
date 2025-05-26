@@ -14,11 +14,9 @@
 ASTUDebugTool::ASTUDebugTool()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-#if UE_BUILD_SHIPPING
-	PrimaryActorTick.bCanEverTick = false;
-#else
 	PrimaryActorTick.bCanEverTick = true;
-#endif
+	
+	bIsEditorOnlyActor = true;
 }
 
 // Called when the game starts or when spawned
@@ -26,9 +24,7 @@ void ASTUDebugTool::BeginPlay()
 {
 	Super::BeginPlay();
 
-#if !UE_BUILD_SHIPPING
 	FImGuiModule::Get().SetInputMode(false);
-#endif
 }
 
 void ASTUDebugTool::UnrealImGuiText(FString Text)
@@ -41,7 +37,6 @@ void ASTUDebugTool::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-#if !UE_BUILD_SHIPPING
 	bool bIsInputMode = FImGuiModule::Get().IsInputMode();
 	ASTUBaseCharacter* Character = Cast<ASTUBaseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	USTUHealthComponent* HealthComponent = nullptr;
@@ -159,12 +154,10 @@ void ASTUDebugTool::Tick(float DeltaTime)
 			}
 		}
 	}
-#endif
 }
 
 void ASTUDebugTool::StyleImGui()
 {
-#if !UE_BUILD_SHIPPING
 	ImGuiStyle* Style = &ImGui::GetStyle();
 	
 	ImVec4* Colors = Style->Colors;
@@ -217,6 +210,5 @@ void ASTUDebugTool::StyleImGui()
 	Colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 	Colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 	Colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-#endif
 }
 

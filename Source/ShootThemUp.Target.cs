@@ -12,11 +12,5 @@ public class ShootThemUpTarget : TargetRules
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 
 		ExtraModuleNames.AddRange( new string[] { "ShootThemUp" } );
-		RegisterModulesCreatedByRider();
-	}
-
-	private void RegisterModulesCreatedByRider()
-	{
-		ExtraModuleNames.AddRange(new string[] { "ShootThemUpEditor" });
 	}
 }

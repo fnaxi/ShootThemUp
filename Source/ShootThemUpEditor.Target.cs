@@ -11,6 +11,6 @@ public class ShootThemUpEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 
-		ExtraModuleNames.AddRange( new string[] { "ShootThemUp" } );
+		ExtraModuleNames.AddRange( new string[] { "ShootThemUp", "ShootThemUpEditor" } );
 	}
 }

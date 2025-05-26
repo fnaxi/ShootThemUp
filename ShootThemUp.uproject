@@ -14,7 +14,7 @@
 		},
 		{
 			"Name": "ShootThemUpEditor",
-			"Type": "UncookedOnly",
+			"Type": "Editor",
 			"LoadingPhase": "PostEngineInit"
 		}
 	],
