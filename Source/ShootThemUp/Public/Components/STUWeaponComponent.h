@@ -42,7 +42,10 @@ public:
 	/** Equip next weapon. */
 	void NextWeapon();
 
-	/** Reload currently equipped weapon. */
+	/**
+	 * Input-callback for reloading weapon by character.
+	 * @see ChangeClip()
+	 */
 	void Reload();
 	
 protected:
@@ -117,6 +120,12 @@ private:
 
 	/** Can reload current weapon or no. */
 	bool CanReload() const;
+
+	/** Callback for OnEmptyClip event in ASTUBaseWeapon class. Basically this implements auto-reload feature. */
+	void OnEmptyClip();
+
+	/** Change clip in the current weapon. */
+	void ChangeClip();
 
 	/**
 	 * Find first anim notify of specified class in animation montage passed by parameter.

@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "STUBaseWeapon.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
+
 /** 
  * Structure that describes ammo data for specific weapon type.
  */
@@ -39,9 +41,18 @@ public:
 	// Sets default values for this actor's properties
 	ASTUBaseWeapon();
 
+	/** Broadcast when clip in the weapon is empty. */
+	FOnClipEmptySignature OnClipEmpty;
+
 	/** Start or stop shooting. */
 	virtual void StartFire();
 	virtual void StopFire();
+
+	/** Change clip in the weapon if there are clips left. */
+	void ChangeClip();
+
+	/** Can reload this weapon or no. */
+	bool CanReload() const;
 
 protected:
 	/** The mesh of that weapon. */
@@ -89,9 +100,6 @@ protected:
 	
 	/** Check is current weapon's clip empty or no. */
 	bool IsClipEmpty() const;
-
-	/** Change clip in the weapon if there are clips left. */
-	void ChangeClip();
 
 	/** Log current ammo info to console. */
 	void LogAmmo();
