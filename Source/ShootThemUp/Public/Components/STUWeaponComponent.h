@@ -58,6 +58,9 @@ private:
 	/** An index of weapon that is current one now. */
 	int32 CurrentWeaponIndex = 0;
 
+	/** Is equip animation montage is in progress or no. */
+	bool bEquipAnimInProgress = false;
+
 	/** Attach weapon to one of the sockets character's mesh have. */
 	void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
 
@@ -75,5 +78,11 @@ private:
 
 	/** Called when equip animation montage was finished. */
 	void OnEquipFinished(USkeletalMeshComponent* MeshComponent);
-	
+
+	/** Return true if character can shoot right now. */
+	bool CanFire() const;
+
+	/** Can equip new weapon or no. */
+	bool CanEquip() const;
+
 };
