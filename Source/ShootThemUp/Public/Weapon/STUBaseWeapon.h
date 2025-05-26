@@ -3,31 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "GameFramework/Actor.h"
 #include "STUBaseWeapon.generated.h"
-
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
-
-/** 
- * Structure that describes ammo data for specific weapon type.
- */
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-	GENERATED_USTRUCT_BODY()
-	
-	/** Amount of bullets in one magazine. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	int32 Bullets;
-
-	/** Amount of max clips that can have the weapon. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon", meta = (EditCondition = "!bInfinite"))
-	int32 Clips;
-
-	/** Is this weapon have infinite ammo or no. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	bool bInfinite;
-};
 
 /**
  * 

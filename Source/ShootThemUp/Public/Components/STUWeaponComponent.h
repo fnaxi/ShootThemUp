@@ -3,25 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "Components/ActorComponent.h"
 #include "STUWeaponComponent.generated.h"
-
-/**
- * 
- */
-USTRUCT(BlueprintType)
-struct FWeaponData
-{
-	GENERATED_USTRUCT_BODY()
-
-	/** The weapon class. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	TSubclassOf<class ASTUBaseWeapon> WeaponClass;
-
-	/** Reload animation montage for this weapon. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	UAnimMontage* ReloadAnimMontage;
-};
 
 /**
  * 
@@ -126,24 +110,5 @@ private:
 
 	/** Change clip in the current weapon. */
 	void ChangeClip();
-
-	/**
-	 * Find first anim notify of specified class in animation montage passed by parameter.
-	 * @warning Keep in mind that there should be only one anim notify in animation montage.
-	 */
-	template<typename TNotifyClass>
-	TNotifyClass* FindNotifyByClass(UAnimSequenceBase* Animation)
-	{
-		if (!Animation) return nullptr;
-		for (FAnimNotifyEvent NotifyEvent : Animation->Notifies)
-		{
-			TNotifyClass* AnimNotify = Cast<TNotifyClass>(NotifyEvent.Notify);
-			if (AnimNotify)
-			{
-				return AnimNotify;
-			}
-		}
-		return nullptr;
-	}
 	
 };

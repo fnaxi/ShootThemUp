@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "Components/ActorComponent.h"
 #include "STUHealthComponent.generated.h"
-
-DECLARE_MULTICAST_DELEGATE(FOnDeathSignature)
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float);
 
 /**
  * 

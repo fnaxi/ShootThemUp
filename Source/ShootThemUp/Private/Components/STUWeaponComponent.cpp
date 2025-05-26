@@ -3,12 +3,15 @@
 
 #include "Components/STUWeaponComponent.h"
 
+#include "Animations/AnimUtils.h"
 #include "Animations/STUEquipFinishedAnimNotify.h"
 #include "Animations/STUReloadFinishedAnimNotify.h"
 #include "GameFramework/Character.h"
 #include "Weapon/STUBaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All)
+
+constexpr static int32 WeaponNum = 2;
 
 // Sets default values for this component's properties
 USTUWeaponComponent::USTUWeaponComponent()
@@ -50,6 +53,8 @@ void USTUWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	checkf(WeaponData.Num() == WeaponNum, TEXT("Our character can hold only %i weapons"), WeaponNum);
+	
 	CurrentWeaponIndex = 0;
 	InitAnimations();
 	SpawnWeapons();
@@ -134,17 +139,26 @@ void USTUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation)
 void USTUWeaponComponent::InitAnimations()
 {
 	// Initialize equip animation
-	USTUEquipFinishedAnimNotify* EquipFinishedNotify = FindNotifyByClass<USTUEquipFinishedAnimNotify>(EquipAnimMontage);
+	USTUEquipFinishedAnimNotify* EquipFinishedNotify = FAnimUtils::FindNotifyByClass<USTUEquipFinishedAnimNotify>(EquipAnimMontage);
 	if (EquipFinishedNotify)
 	{
 		EquipFinishedNotify->OnNotified.AddUObject(this, &USTUWeaponComponent::OnEquipFinished);
+	}
+	else
+	{
+		UE_LOG(LogWeaponComponent, Error, TEXT("Equip anim notify is forgotten to set"))
+		checkNoEntry();
 	}
 
 	// Initialize reload animation for each weapon
 	for (FWeaponData OneWeaponData : WeaponData)
 	{
-		USTUReloadFinishedAnimNotify* ReloadFinishedNotify = FindNotifyByClass<USTUReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
-		if (!ReloadFinishedNotify) continue;
+		USTUReloadFinishedAnimNotify* ReloadFinishedNotify = FAnimUtils::FindNotifyByClass<USTUReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
+		if (!ReloadFinishedNotify)
+		{
+			UE_LOG(LogWeaponComponent, Error, TEXT("Reload anim notify is forgotten to set"))
+			checkNoEntry();
+		}
 		
 		ReloadFinishedNotify->OnNotified.AddUObject(this, &USTUWeaponComponent::OnReloadFinished);
 	}
