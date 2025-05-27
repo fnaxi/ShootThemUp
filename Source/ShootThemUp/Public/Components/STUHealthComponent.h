@@ -23,8 +23,12 @@ public:
 	float GetHealth() const { return Health; }
 
 	/** Check is character dead or no. */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Health")
 	bool IsDead() const { return FMath::IsNearlyZero(Health); }
+	
+	/** Get percent of health character have. */
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	float GetHealthPercent() const { return Health / MaxHealth; }
 
 	/** On death event. */
 	FOnDeathSignature OnDeath;
