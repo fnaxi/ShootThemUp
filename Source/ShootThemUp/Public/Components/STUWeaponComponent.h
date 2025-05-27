@@ -33,10 +33,11 @@ public:
 	void Reload();
 
 	/**
-	 * Get UI data for current weapon.
+	 * Get UI/ammo data for current weapon.
 	 * @returns True if current weapon is not nullptr.
 	 */
-	bool GetWeaponUIData(FWeaponUIData& OutUIData) const;
+	bool GetCurrentWeaponUIData(FWeaponUIData& OutUIData) const;
+	bool GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const;
 	
 protected:
 	// Called when the game starts

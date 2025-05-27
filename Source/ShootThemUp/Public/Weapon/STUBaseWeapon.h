@@ -35,6 +35,9 @@ public:
 	/** Get UI data for this weapon. */
 	FWeaponUIData GetUIData() const { return UIData; }
 
+	/** Get current ammo. */
+	FAmmoData GetAmmoData() const { return CurrentAmmo; }
+
 protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
