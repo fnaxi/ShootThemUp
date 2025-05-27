@@ -31,6 +31,12 @@ public:
 	 * @see ChangeClip()
 	 */
 	void Reload();
+
+	/**
+	 * Get UI data for current weapon.
+	 * @returns True if current weapon is not nullptr.
+	 */
+	bool GetWeaponUIData(FWeaponUIData& OutUIData) const;
 	
 protected:
 	// Called when the game starts

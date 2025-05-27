@@ -48,6 +48,23 @@ struct FWeaponData
 	UAnimMontage* ReloadAnimMontage;
 };
 
+/**
+ * 
+ */
+USTRUCT(BlueprintType)
+struct FWeaponUIData
+{
+	GENERATED_USTRUCT_BODY()
+
+	/** Main icon for this weapon. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+	UTexture2D* MainIcon;
+	
+	/** Crosshair icon for this weapon. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+	UTexture2D* CrosshairIcon;
+};
+
 /************************************************************************/
 /*                              HEALTH                                  */
 /************************************************************************/

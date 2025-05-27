@@ -32,6 +32,9 @@ public:
 	/** Can reload this weapon or no. */
 	bool CanReload() const;
 
+	/** Get UI data for this weapon. */
+	FWeaponUIData GetUIData() const { return UIData; }
+
 protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -49,6 +52,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoData DefaultAmmo{15, 10, false};
 
+	/** UI data for this weapon. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+	FWeaponUIData UIData;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
