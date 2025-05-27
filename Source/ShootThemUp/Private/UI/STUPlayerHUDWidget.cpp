@@ -3,12 +3,13 @@
 
 #include "UI/STUPlayerHUDWidget.h"
 
+#include "STUUtils.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/STUWeaponComponent.h"
 
 float USTUPlayerHUDWidget::GetHealthPercent() const
 {
-	const USTUHealthComponent* HealthComponent = GetHealthComponent();
+	const USTUHealthComponent* HealthComponent = FSTUUtils::GetSTUPlayerComponent<USTUHealthComponent>(GetOwningPlayerPawn());
 	if (!HealthComponent) return 0.0f;
 
 	return HealthComponent->GetHealthPercent();
@@ -16,7 +17,7 @@ float USTUPlayerHUDWidget::GetHealthPercent() const
 
 bool USTUPlayerHUDWidget::GetCurrentWeaponUIData(FWeaponUIData& OutUIData) const
 {
-	const USTUWeaponComponent* WeaponComponent = GetWeaponComponent();
+	const USTUWeaponComponent* WeaponComponent = FSTUUtils::GetSTUPlayerComponent<USTUWeaponComponent>(GetOwningPlayerPawn());
 	if (!WeaponComponent) return false;
 	
 	return WeaponComponent->GetCurrentWeaponUIData(OutUIData);
@@ -24,7 +25,7 @@ bool USTUPlayerHUDWidget::GetCurrentWeaponUIData(FWeaponUIData& OutUIData) const
 
 bool USTUPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const
 {
-	const USTUWeaponComponent* WeaponComponent = GetWeaponComponent();
+	const USTUWeaponComponent* WeaponComponent = FSTUUtils::GetSTUPlayerComponent<USTUWeaponComponent>(GetOwningPlayerPawn());
 	if (!WeaponComponent) return false;
 	
 	return WeaponComponent->GetCurrentWeaponAmmoData(OutAmmoData);
@@ -32,7 +33,7 @@ bool USTUPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const
 
 bool USTUPlayerHUDWidget::IsPlayerAlive() const
 {
-	const USTUHealthComponent* HealthComponent = GetHealthComponent();
+	const USTUHealthComponent* HealthComponent = FSTUUtils::GetSTUPlayerComponent<USTUHealthComponent>(GetOwningPlayerPawn());
 	return HealthComponent && !HealthComponent->IsDead(); // Keep in mind that actually HealthComponent destroys when player dies
 }
 
@@ -40,27 +41,5 @@ bool USTUPlayerHUDWidget::IsPlayerSpectating() const
 {
 	const APlayerController* Controller = GetOwningPlayer();
 	return Controller && Controller->GetStateName() == NAME_Spectating;
-}
-
-USTUWeaponComponent* USTUPlayerHUDWidget::GetWeaponComponent() const
-{
-	const APawn* Player = GetOwningPlayerPawn();
-	if (Player)
-	{
-		USTUWeaponComponent* WeaponComponent = Cast<USTUWeaponComponent>(Player->GetComponentByClass(USTUWeaponComponent::StaticClass()));
-		return WeaponComponent;
-	}
-	return nullptr;
-}
-
-USTUHealthComponent* USTUPlayerHUDWidget::GetHealthComponent() const
-{
-	const APawn* Player = GetOwningPlayerPawn();
-	if (Player)
-	{
-		USTUHealthComponent* HealthComponent = Cast<USTUHealthComponent>(Player->GetComponentByClass(USTUHealthComponent::StaticClass()));
-		return HealthComponent;
-	}
-	return nullptr;
 }
 

@@ -36,9 +36,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool IsPlayerSpectating() const;
 	
-private:
-	/** Get weapon/health component from owning this UI character. */
-	class USTUWeaponComponent* GetWeaponComponent() const;
-	class USTUHealthComponent* GetHealthComponent() const;
-	
 };
