@@ -27,9 +27,18 @@ public:
 	/** Get ammo data of current weapon character have. */
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const;
-
+	
+	/** Returns true if player is alive. */
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	bool IsPlayerAlive() const;
+	
+	/** Is player spectating or no. */
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	bool IsPlayerSpectating() const;
+	
 private:
-	/** Get weapon component from owning this UI character. */
+	/** Get weapon/health component from owning this UI character. */
 	class USTUWeaponComponent* GetWeaponComponent() const;
+	class USTUHealthComponent* GetHealthComponent() const;
 	
 };
