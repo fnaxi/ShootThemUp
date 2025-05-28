@@ -166,7 +166,7 @@ void USTUWeaponComponent::InitAnimations()
 	}
 	else
 	{
-		UE_LOG(LogWeaponComponent, Error, TEXT("Equip anim notify is forgotten to set"))
+		UE_LOG(LogWeaponComponent, Error, TEXT("Equip anim notify is forgotten to set"));
 		checkNoEntry();
 	}
 
@@ -176,7 +176,7 @@ void USTUWeaponComponent::InitAnimations()
 		USTUReloadFinishedAnimNotify* ReloadFinishedNotify = FAnimUtils::FindNotifyByClass<USTUReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
 		if (!ReloadFinishedNotify)
 		{
-			UE_LOG(LogWeaponComponent, Error, TEXT("Reload anim notify is forgotten to set"))
+			UE_LOG(LogWeaponComponent, Error, TEXT("Reload anim notify is forgotten to set"));
 			checkNoEntry();
 		}
 		
@@ -199,7 +199,6 @@ void USTUWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComponent
 	if (Character && Character->GetMesh() == MeshComponent)
 	{
 		bReloadAnimInProgress = false;
-		UE_LOG(LogWeaponComponent, Display, TEXT("Equip finished"))
 	}
 }
 
