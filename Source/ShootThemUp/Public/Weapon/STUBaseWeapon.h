@@ -38,6 +38,9 @@ public:
 	/** Get current ammo. */
 	FAmmoData GetAmmoData() const { return CurrentAmmo; }
 
+	/** Add clips amount to this weapon if ammo is not full. */
+	bool TryToAddAmmo(int32 ClipsAmount);
+
 protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -85,7 +88,10 @@ protected:
 
 	/** Returns true if there's no ammo for this weapon (both clips and bullets in current clip). */
 	bool IsAmmoEmpty() const;
-	
+
+	/** Checks is ammo full or no. */
+	bool IsAmmoFull() const;
+
 	/** Check is current weapon's clip empty or no. */
 	bool IsClipEmpty() const;
 

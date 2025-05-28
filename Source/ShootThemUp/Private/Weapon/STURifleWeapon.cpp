@@ -38,12 +38,12 @@ void ASTURifleWeapon::MakeShoot()
 	{
 		MakeDamage(HitResult);
 
-		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Purple, false, 3.0f, 0, 3.0f);
+		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Magenta, false, 3.0f, 0, 3.0f);
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Orange, false, 5.0f);
 	}
 	else
 	{
-		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Purple, false, 3.0f, 0, 3.0f);
+		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Magenta, false, 3.0f, 0, 3.0f);
 	}
 
 	DecreaseAmmo();

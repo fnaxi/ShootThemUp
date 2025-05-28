@@ -68,6 +68,18 @@ bool USTUWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const
 	return false;
 }
 
+bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount)
+{
+	for (ASTUBaseWeapon* Weapon : Weapons)
+	{
+		if (Weapon && Weapon->IsA(WeaponType))
+		{
+			return Weapon->TryToAddAmmo(ClipsAmount);
+		}
+	}
+	return false;
+}
+
 // Called when the game starts
 void USTUWeaponComponent::BeginPlay()
 {
@@ -112,7 +124,7 @@ void USTUWeaponComponent::SpawnWeapons()
 		ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(OneWeaponData.WeaponClass);
 		if (!Weapon) continue;
 
-		Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnEmptyClip); // Auto-reload
+		Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnClipEmpty); // Auto-reload
 		Weapon->SetOwner(Character);
 		Weapons.Add(Weapon);
 
@@ -217,9 +229,24 @@ bool USTUWeaponComponent::CanReload() const
 	return CurrentWeapon && !bEquipAnimInProgress && !bReloadAnimInProgress && CurrentWeapon->CanReload();
 }
 
-void USTUWeaponComponent::OnEmptyClip()
+void USTUWeaponComponent::OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon)
 {
-	ChangeClip();
+	if (!AmmoEmptyWeapon) return;
+	
+	if (CurrentWeapon == AmmoEmptyWeapon)
+	{
+		ChangeClip(); // TODO: Auto-Reload: See Here
+	}
+	else
+	{
+		for (ASTUBaseWeapon* Weapon : Weapons)
+		{
+			if (Weapon == AmmoEmptyWeapon)
+			{
+				Weapon->ChangeClip(); // No reload animation
+			}
+		}
+	}
 }
 
 void USTUWeaponComponent::ChangeClip()

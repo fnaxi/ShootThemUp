@@ -39,6 +39,9 @@ public:
 	bool GetCurrentWeaponUIData(FWeaponUIData& OutUIData) const;
 	bool GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const;
 	
+	/** Add clips amount to choosen weapon if possible, returns false if no. */
+	bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -113,7 +116,7 @@ private:
 	bool CanReload() const;
 
 	/** Callback for OnEmptyClip event in ASTUBaseWeapon class. Basically this implements auto-reload feature. */
-	void OnEmptyClip();
+	void OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon);
 
 	/** Change clip in the current weapon. */
 	void ChangeClip();

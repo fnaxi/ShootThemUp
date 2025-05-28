@@ -14,6 +14,16 @@ class SHOOTTHEMUP_API ASTUAmmoPickup : public ASTUBasePickup
 {
 	GENERATED_BODY()
 
+protected:
+
+	/** How many clips to add when character picks this pickup. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup", meta = (ClampMin = "1.0", ClampMax = "10.0"))
+	int32 ClipsAmount = 10;
+
+	/** To what weapon this pickup should add clips. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	TSubclassOf<class ASTUBaseWeapon> WeaponType;
+
 private:
 	/**
 	 * Give pickup to choosen pawn.

@@ -8,7 +8,7 @@
 /*                              WEAPON                                  */
 /************************************************************************/
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, class ASTUBaseWeapon*)
 
 /** 
  * Structure that describes ammo data for specific weapon type.
@@ -41,7 +41,7 @@ struct FWeaponData
 
 	/** The weapon class. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	TSubclassOf<class ASTUBaseWeapon> WeaponClass;
+	TSubclassOf<ASTUBaseWeapon> WeaponClass;
 
 	/** Reload animation montage for this weapon. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")

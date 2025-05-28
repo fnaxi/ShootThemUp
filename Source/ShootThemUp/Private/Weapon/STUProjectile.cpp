@@ -51,7 +51,7 @@ void ASTUProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* 
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius, UDamageType::StaticClass(), { GetOwner() },
 		this, GetController(), bDoFullDamage);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Emerald, false, 5.0f);
+	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Magenta, false, 5.0f);
 	
 	Destroy();
 }
