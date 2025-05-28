@@ -22,6 +22,10 @@ protected:
 	/** Collision for this pickup. Character will pick this pickup when overlap that collision. */
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class USphereComponent* CollisionComponent;
+
+	/** A time to spawn this pickup again after it was taken. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	float RespawnTime = 5.0f;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,5 +40,19 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	/** 
+	 * Give pickup to choosen pawn.
+	 * @returns True if pawn can pick this pickup and false if for example we want add health but pawn already have full health.
+	 * @important Should be overriden in parent class because otherwise it will be impossible to pick it up.
+	 */
+	virtual bool GivePickupTo(APawn* PlayerPawn);
+
+	/** Called when the pickup was taken. */
+	void PickupWasTaken();
+
+	/** Called after timer ended (RespawnTime). */
+	void Respawn();
 
 };
