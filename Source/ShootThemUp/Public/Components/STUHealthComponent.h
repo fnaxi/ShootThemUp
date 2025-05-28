@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "STUCoreTypes.h"
 #include "Components/ActorComponent.h"
+#include "Pickups/STUHealthPickup.h"
 #include "STUHealthComponent.generated.h"
 
 /**
@@ -29,6 +30,12 @@ public:
 	/** Get percent of health character have. */
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float GetHealthPercent() const { return Health / MaxHealth; }
+
+	/** Add health of it's not max, otherwise return false. */
+	bool TryToAddHealth(float HealthAmount);
+
+	/** Is health full or no. */
+	float IsHealthFull() const;
 
 	/** On death event. */
 	FOnDeathSignature OnDeath;
