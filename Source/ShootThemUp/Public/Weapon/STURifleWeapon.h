@@ -15,11 +15,18 @@ class SHOOTTHEMUP_API ASTURifleWeapon : public ASTUBaseWeapon
 	GENERATED_BODY()
 
 public:
+	// Sets default values
+	ASTURifleWeapon();
+	
 	/** Start or stop shooting. */
 	virtual void StartFire() override;
 	virtual void StopFire() override;
 
 protected:
+	/** An FX component for the rifle. */
+	UPROPERTY(VisibleAnywhere, Category = "VFX")
+	class USTUWeaponFXComponent* WeaponFXComponent;
+	
 	/** Time between shots when fire button is hold. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float TimeBetweenShots = 0.1f;
@@ -31,6 +38,9 @@ protected:
 	/** Damage this weapon makes. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float DamageAmount = 10.0f;
+	
+	// Called when the game starts
+	virtual void BeginPlay() override;
 	
 	/** Make a shoot. */
 	virtual void MakeShoot() override;
