@@ -42,6 +42,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	/** A yaw rotation to add every frame. */
+	float RotationYaw = 0.0f;
+	
 	/** 
 	 * Give pickup to choosen pawn.
 	 * @returns True if pawn can pick this pickup and false if for example we want add health but pawn already have full health.
@@ -54,5 +57,8 @@ private:
 
 	/** Called after timer ended (RespawnTime). */
 	void Respawn();
+
+	/** Generate speed and direction to rotate pickup every frame. */
+	void GenerateRotationYaw();
 
 };
