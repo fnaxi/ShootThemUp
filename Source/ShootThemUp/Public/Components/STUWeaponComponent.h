@@ -41,10 +41,15 @@ public:
 	
 	/** Add clips amount to choosen weapon if possible, returns false if no. */
 	bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
+	
+	/** Checks is current weapon fires now or no. */
+	bool IsFiring() const;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	// Calls when game ends
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	/** Weapons to spawn for the character. */

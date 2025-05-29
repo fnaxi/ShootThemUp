@@ -80,6 +80,11 @@ bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, i
 	return false;
 }
 
+bool USTUWeaponComponent::IsFiring() const
+{
+	return CurrentWeapon && CurrentWeapon->IsFiring();
+}
+
 // Called when the game starts
 void USTUWeaponComponent::BeginPlay()
 {

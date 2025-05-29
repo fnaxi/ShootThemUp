@@ -86,6 +86,9 @@ private:
 
 	/** Calls when character stopped to run. */
 	void StopRunning();
+
+	/** Calls USTUWeaponComponent::StartFire() but also disables ability to shoot while running. */
+	void OnStartFire();
 	
 	/** Is character running currently or not. */
 	bool bWantsToRun = false;

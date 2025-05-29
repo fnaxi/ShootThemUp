@@ -41,6 +41,9 @@ public:
 	/** Add clips amount to this weapon if ammo is not full. */
 	bool TryToAddAmmo(int32 ClipsAmount);
 
+	/** Check is this weapon firing now or not. */
+	bool IsFiring() const;
+
 protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -97,6 +100,9 @@ protected:
 
 	/** Log current ammo info to console. */
 	void LogAmmo();
+
+	/** Is this weapon fires now or no. */
+	bool bFireInProgress = false;
 
 private:
 	/** Ammo that is used by weapon. */

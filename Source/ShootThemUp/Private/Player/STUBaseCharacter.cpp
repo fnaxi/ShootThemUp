@@ -44,6 +44,7 @@ void ASTUBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	check(HealthComponent);
+	check(WeaponComponent);
 	check(HealthTextComponent);
 	check(GetCharacterMovement());
 	check(GetMesh());
@@ -65,8 +66,7 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	check(PlayerInputComponent)
-	check(WeaponComponent)
+	check(PlayerInputComponent);
 
 	// Movement
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
@@ -80,7 +80,7 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::StartRunning);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::StopRunning);
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::StartFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUBaseCharacter::OnStartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
 	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Reload);
@@ -124,11 +124,23 @@ void ASTUBaseCharacter::MoveRight(float Amount)
 void ASTUBaseCharacter::StartRunning()
 {
 	bWantsToRun = true;
+	if (IsRunning())
+	{
+		WeaponComponent->StopFire();
+	}
 }
 
 void ASTUBaseCharacter::StopRunning()
 {
 	bWantsToRun = false;
+}
+
+void ASTUBaseCharacter::OnStartFire()
+{
+	if (!IsRunning())
+	{
+		WeaponComponent->StartFire();
+	}
 }
 
 void ASTUBaseCharacter::OnDeath()

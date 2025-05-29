@@ -21,10 +21,12 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 
 void ASTUBaseWeapon::StartFire()
 {
+	bFireInProgress = true;
 }
 
 void ASTUBaseWeapon::StopFire()
 {
+	bFireInProgress = false;
 }
 
 // Called when the game starts or when spawned
@@ -177,6 +179,11 @@ bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
 	}
 
 	return true;
+}
+
+bool ASTUBaseWeapon::IsFiring() const
+{
+	return bFireInProgress;
 }
 
 void ASTUBaseWeapon::LogAmmo()
