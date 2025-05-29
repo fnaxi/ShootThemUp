@@ -38,7 +38,7 @@ void USTUWeaponFXComponent::PlayImpactFX(const FHitResult& Hit)
 	if (DecalComponent)
 	{
 		DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime, ImpactData.DecalData.FadeOutTime);
-		DecalComponent->SetFadeScreenSize(0.0f);
+		DecalComponent->SetFadeScreenSize(DecalsFadeDistance);
 	}
 }
 
