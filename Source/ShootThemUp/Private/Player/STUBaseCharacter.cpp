@@ -29,7 +29,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
-	HealthComponent = CreateDefaultSubobject<USTUHealthComponent>(TEXT("HealthComponent"));
+	HealthComp = CreateDefaultSubobject<USTUHealthComponent>(TEXT("HealthComponent"));
 	
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("HealthTextComponent"));
 	HealthTextComponent->SetupAttachment(GetRootComponent());
@@ -43,15 +43,15 @@ void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(HealthComponent);
+	check(HealthComp);
 	check(WeaponComponent);
 	check(HealthTextComponent);
 	check(GetCharacterMovement());
 	check(GetMesh());
 
-	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
-	HealthComponent->OnDeath.AddUObject(this, &ASTUBaseCharacter::OnDeath);
-	HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
+	OnHealthChanged(HealthComp->GetHealth(), 0.0f);
+	HealthComp->OnDeath.AddUObject(this, &ASTUBaseCharacter::OnDeath);
+	HealthComp->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 
 	LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroundLanded);
 }

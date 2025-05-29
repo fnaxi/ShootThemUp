@@ -30,7 +30,7 @@ protected:
 
 	/** Health realization for the character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class USTUHealthComponent* HealthComponent;
+	class USTUHealthComponent* HealthComp;
 
 	/** Weapon management and logic realization for the character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
