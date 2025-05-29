@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "STUCoreTypes.h"
 #include "STUWeaponFXComponent.generated.h"
 
 /**
@@ -27,6 +28,10 @@ protected:
 
 	/** Niagara system to spawn on impact hit. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
-	class UNiagaraSystem* Effect;
+	FImpactData DefaultImpactData;
+
+	/** Choose what effects to play on different physical materials. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	TMap<UPhysicalMaterial*, FImpactData> ImpactDataMap;
 	
 };

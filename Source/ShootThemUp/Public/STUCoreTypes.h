@@ -71,3 +71,49 @@ struct FWeaponUIData
 
 DECLARE_MULTICAST_DELEGATE(FOnDeathSignature)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float);
+
+/************************************************************************/
+/*                           VISUAL EFFECTS                             */
+/************************************************************************/
+
+/**
+ *
+ */
+USTRUCT(BlueprintType)
+struct FDecalData
+{
+	GENERATED_USTRUCT_BODY()
+
+	/** Material for this decal. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	UMaterialInterface* Material;
+
+	/** Size of this decal. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	FVector Size = FVector(10.0f);
+
+	/** Life time of this decal. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	float LifeTime = 5.0f;
+
+	/** The time of decal fade out animation. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	float FadeOutTime = 0.7f;
+};
+
+/**
+ *
+ */
+USTRUCT(BlueprintType)
+struct FImpactData
+{
+	GENERATED_USTRUCT_BODY()
+
+	/** Effect of the impact. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	class UNiagaraSystem* NiagaraEffect;
+
+	/** Decal info for this impact. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	FDecalData DecalData;
+};
