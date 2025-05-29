@@ -66,7 +66,11 @@ protected:
 	/** Character healing amount. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
 	float HealModifier = 5.0f;
-	
+
+	/** Camera shake to play on damage. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	TSubclassOf<class UCameraShakeBase> CameraShake;
+
 private:
 	/** Set new character's health, ensure it's not bigger than MaxHealth and broadcast OnHealthChanged delegate. */
 	void SetHealth(float NewHealth);
@@ -84,4 +88,7 @@ private:
 	UFUNCTION()
 	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 	
+	/** Play danage canera shake. */
+	void PlayCameraShake();
+
 };

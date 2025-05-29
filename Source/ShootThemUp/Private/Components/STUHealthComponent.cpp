@@ -3,8 +3,7 @@
 
 #include "Components/STUHealthComponent.h"
 
-#include "Dev/STUFireDamageType.h"
-#include "Dev/STUIceDamageType.h"
+#include "Camera/CameraShakeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
@@ -76,6 +75,23 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 	else if (bAutoHeal)
 	{
 		GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &USTUHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
+	}
+
+	PlayCameraShake();
+}
+
+void USTUHealthComponent::PlayCameraShake()
+{
+	if (IsDead()) return;
+
+	APawn* Player = Cast<APawn>(GetOwner());
+	if (Player)
+	{
+		APlayerController* Controller = Player->GetController<APlayerController>();
+		if (Controller && Controller->PlayerCameraManager)
+		{
+			Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+		}
 	}
 }
 
