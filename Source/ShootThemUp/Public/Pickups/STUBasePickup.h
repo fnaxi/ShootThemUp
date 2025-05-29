@@ -37,11 +37,24 @@ protected:
 	 */
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
+	/**
+	 * Event when an actor no longer overlaps another actor, and they have separated.
+	 * @note Components on both this and the other Actor must have bGenerateOverlapEvents set to true to generate overlap events.
+	 */
+	virtual void NotifyActorEndOverlap(AActor* OtherActor);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	/** 
+	 * Characters that are overlapping with this pickup right now.
+	 * Adds an ability to be picked up on every frame.
+	 */
+	UPROPERTY()
+	TArray<APawn*> OverlappingPawns;
+
 	/** A yaw rotation to add every frame. */
 	float RotationYaw = 0.0f;
 	
