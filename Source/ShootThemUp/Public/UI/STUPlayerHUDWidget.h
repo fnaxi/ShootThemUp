@@ -35,5 +35,16 @@ public:
 	/** Is player spectating or no. */
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool IsPlayerSpectating() const;
-	
+
+	/** Event on take damage. */
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void OnTakeDamage();
+
+	virtual bool Initialize() override;
+
+private:
+	/** Subscribe to OnHealthChanged delegate. */
+	UFUNCTION()
+	void OnHealthChanged(float Health, float HealthDelta);
+
 };

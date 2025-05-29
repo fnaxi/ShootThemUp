@@ -100,7 +100,7 @@ private:
 	void OnDeath();
 
 	/** Calls when health is changed. */
-	void OnHealthChanged(float Health);
+	void OnHealthChanged(float Health, float HealthDelta);
 
 	/** Called upon landing after falling. */
 	UFUNCTION()
