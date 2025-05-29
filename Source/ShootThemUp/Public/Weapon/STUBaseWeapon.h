@@ -64,7 +64,11 @@ protected:
 	/** UI data for this weapon. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
 	FWeaponUIData UIData;
-	
+
+	/** FX for the muzzle. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	class UNiagaraSystem* MuzzleFX;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -101,11 +105,14 @@ protected:
 	/** Log current ammo info to console. */
 	void LogAmmo();
 
-	/** Is this weapon fires now or no. */
-	bool bFireInProgress = false;
+	/** Spawn niagara FX at muzzle location. */
+	class UNiagaraComponent* SpawnMuzzleFX();
 
 private:
 	/** Ammo that is used by weapon. */
 	FAmmoData CurrentAmmo;
+
+	/** Is this weapon fires now or no. */
+	bool bFireInProgress = false;
 
 };

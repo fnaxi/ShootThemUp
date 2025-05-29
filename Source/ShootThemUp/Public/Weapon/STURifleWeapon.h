@@ -52,7 +52,17 @@ private:
 	/** A timer for auto-shooting when fire button is hold. */
 	FTimerHandle ShootTimerHandle;
 
+	/** FX niagara component for the muzzle. It's infinite so save it to be able to set visibility when start/stop firing. */
+	UPROPERTY()
+	class UNiagaraComponent* MuzzleFXComponent;
+
 	/** Take damage to actor that was hit by trace. */
 	void MakeDamage(const FHitResult& HitResult);
+
+	/** Initialize muzzle FX for firing. Spawn it at muzzle location and set it's visibility to true. */
+	void InitMuzzleFX();
+
+	/** Set visibility of infinite muzzle FX. */
+	void SetMuzzleFXVisibility(bool bVisible);
 	
 };
