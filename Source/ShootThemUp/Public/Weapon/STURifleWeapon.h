@@ -38,6 +38,14 @@ protected:
 	/** Damage this weapon makes. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float DamageAmount = 10.0f;
+
+	/** FX of the rifle's trace. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	class UNiagaraSystem* TraceFX;
+	
+	/** A FVector variable in Niagara system that means the end of the trace location. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	FString TraceTargetName = "TraceTarget";
 	
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -64,5 +72,8 @@ private:
 
 	/** Set visibility of infinite muzzle FX. */
 	void SetMuzzleFXVisibility(bool bVisible);
+
+	/** Spawn the FX of the trace. */
+	void SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd);
 	
 };
