@@ -68,7 +68,7 @@ protected:
 	/** FX for the muzzle. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
 	class UNiagaraSystem* MuzzleFX;
-
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

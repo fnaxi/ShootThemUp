@@ -60,5 +60,9 @@ void USTUPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
 	{
 		OnTakeDamage();
 	}
+	else if (HealthDelta > 0.0f)
+	{
+		OnHeal();
+	}
 }
 

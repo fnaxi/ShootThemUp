@@ -35,7 +35,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 	HealthTextComponent->bOwnerNoSee = true;
 
-	WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>(TEXT("WeaponComponent"));
+	WeaponComp = CreateDefaultSubobject<USTUWeaponComponent>(TEXT("WeaponComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -44,7 +44,7 @@ void ASTUBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	check(HealthComp);
-	check(WeaponComponent);
+	check(WeaponComp);
 	check(HealthTextComponent);
 	check(GetCharacterMovement());
 	check(GetMesh());
@@ -81,9 +81,9 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::StartRunning);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::StopRunning);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUBaseCharacter::OnStartFire);
-	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
-	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
-	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Reload);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComp, &USTUWeaponComponent::StopFire);
+	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComp, &USTUWeaponComponent::NextWeapon);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComp, &USTUWeaponComponent::Reload);
 }
 
 bool ASTUBaseCharacter::IsRunning() const
@@ -126,7 +126,7 @@ void ASTUBaseCharacter::StartRunning()
 	bWantsToRun = true;
 	if (IsRunning())
 	{
-		WeaponComponent->StopFire();
+		WeaponComp->StopFire();
 	}
 }
 
@@ -139,7 +139,7 @@ void ASTUBaseCharacter::OnStartFire()
 {
 	if (!IsRunning())
 	{
-		WeaponComponent->StartFire();
+		WeaponComp->StartFire();
 	}
 }
 
@@ -158,7 +158,7 @@ void ASTUBaseCharacter::OnDeath()
 
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	WeaponComponent->StopFire();
+	WeaponComp->StopFire();
 
 	// Ragdoll
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

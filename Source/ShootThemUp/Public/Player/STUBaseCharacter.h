@@ -34,7 +34,7 @@ protected:
 
 	/** Weapon management and logic realization for the character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class USTUWeaponComponent* WeaponComponent;
+	class USTUWeaponComponent* WeaponComp;
 
 	/** A component that renders a health above the head. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")

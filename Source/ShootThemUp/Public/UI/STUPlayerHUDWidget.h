@@ -40,6 +40,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
 	void OnTakeDamage();
 
+	/** Event on heal. */
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void OnHeal();
+
 	virtual bool Initialize() override;
 
 private:

@@ -44,7 +44,7 @@ public:
 	
 	/** Checks is current weapon fires now or no. */
 	bool IsFiring() const;
-
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

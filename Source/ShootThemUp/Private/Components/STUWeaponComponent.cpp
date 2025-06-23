@@ -6,6 +6,7 @@
 #include "Animations/AnimUtils.h"
 #include "Animations/STUEquipFinishedAnimNotify.h"
 #include "Animations/STUReloadFinishedAnimNotify.h"
+#include "Components/STUHealthComponent.h"
 #include "GameFramework/Character.h"
 #include "Weapon/STUBaseWeapon.h"
 
@@ -92,10 +93,9 @@ void USTUWeaponComponent::BeginPlay()
 
 	checkf(WeaponData.Num() == WeaponNum, TEXT("Our character can hold only %i weapons"), WeaponNum);
 	
-	CurrentWeaponIndex = 0;
 	InitAnimations();
 	SpawnWeapons();
-	EquipWeapon(CurrentWeaponIndex);
+	EquipWeapon(CurrentWeaponIndex = 0);
 }
 
 void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -129,7 +129,7 @@ void USTUWeaponComponent::SpawnWeapons()
 		ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(OneWeaponData.WeaponClass);
 		if (!Weapon) continue;
 
-		Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnClipEmpty); // Auto-reload
+		Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnClipEmpty); // TODO: Auto-reload: See here
 		Weapon->SetOwner(Character);
 		Weapons.Add(Weapon);
 
