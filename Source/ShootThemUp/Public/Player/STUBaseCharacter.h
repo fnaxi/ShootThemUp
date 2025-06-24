@@ -22,27 +22,27 @@ public:
 protected:
 	/** Third-person camera for this character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class UCameraComponent* CameraComponent;
+	TObjectPtr<class UCameraComponent> CameraComponent;
 
 	/** Component that holds camera. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class USpringArmComponent* SpringArmComponent;
+	TObjectPtr<class USpringArmComponent> SpringArmComponent;
 
 	/** Health realization for the character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class USTUHealthComponent* HealthComp;
+	TObjectPtr<class USTUHealthComponent> HealthComp;
 
 	/** Weapon management and logic realization for the character. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class USTUWeaponComponent* WeaponComp;
+	TObjectPtr<class USTUWeaponComponent> WeaponComp;
 
 	/** A component that renders a health above the head. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	class UTextRenderComponent* HealthTextComponent;
+	TObjectPtr<class UTextRenderComponent> HealthTextComponent;
 
 	/** Animation to play when character dies. */
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
-	UAnimMontage* DeathAnimMontage;
+	TObjectPtr<UAnimMontage> DeathAnimMontage;
 	
 	/** Time to destroy character mesh. */
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")

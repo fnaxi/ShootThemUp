@@ -8,6 +8,8 @@
 #include "Weapon/Components/STUWeaponFXComponent.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "STUUtils.h"
+#include "Components/STUHealthComponent.h"
 
 ASTURifleWeapon::ASTURifleWeapon()
 {
@@ -60,8 +62,10 @@ void ASTURifleWeapon::MakeShoot()
 		MakeDamage(HitResult);
 		WeaponFXComponent->PlayImpactFX(HitResult);
 	}
+	
 	SpawnTraceFX(GetMuzzleWorldLocation(), TraceFXEnd);
 	DecreaseAmmo();
+	PlayFireCameraShake();
 }
 
 bool ASTURifleWeapon::GetTraceData(FVector& OutTraceStart, FVector& OutTraceEnd) const
@@ -70,7 +74,10 @@ bool ASTURifleWeapon::GetTraceData(FVector& OutTraceStart, FVector& OutTraceEnd)
 	FRotator ViewRotation;
 	if (!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
 
-	// TODO: Make a low-health modifier to multiply BulletSpread on it, so when character has low health it's harder to shoot
+	USTUHealthComponent* HealthComponent = FSTUUtils::GetSTUPlayerComponent<USTUHealthComponent>(Cast<APawn>(GetOwner()));
+	float BulletSpreadMultiplier = HealthComponent ? FMath::GetMappedRangeValueClamped(FVector2D(1.0f, 0.0f), LowHealthSpreadMultiplier, HealthComponent->GetHealthPercent()) : 1.0f;
+	float BulletSpread = BaseBulletSpread * BulletSpreadMultiplier;
+
 	OutTraceStart = ViewLocation;
 	const float HalfRad = FMath::DegreesToRadians(BulletSpread);
 	const FVector ShootDirection = FMath::VRandCone(ViewRotation.Vector(), HalfRad);

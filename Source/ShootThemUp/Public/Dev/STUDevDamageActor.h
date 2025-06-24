@@ -20,7 +20,7 @@ public:
 
 	/** Root component. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	USceneComponent* SceneComponent;
+	TObjectPtr<USceneComponent> SceneComponent;
 
 	/** The radius of sphere. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

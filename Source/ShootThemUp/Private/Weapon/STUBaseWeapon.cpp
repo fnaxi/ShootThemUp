@@ -201,3 +201,21 @@ UNiagaraComponent* ASTUBaseWeapon::SpawnMuzzleFX()
 	return UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleFX, WeaponMesh, MuzzleSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget, true);
 }
 
+void ASTUBaseWeapon::PlayFireCameraShake()
+{
+	if (!FireCameraShake)
+	{
+		UE_LOG(LogBaseWeapon, Error, TEXT("Forgotten to set FireCameraShake!"));
+	}
+	
+	APawn* Pawn = Cast<APawn>(GetOwner());
+	if (Pawn)
+	{
+		APlayerController* PlayerController = Pawn->GetController<APlayerController>();
+		if (PlayerController && PlayerController->PlayerCameraManager)
+		{
+			PlayerController->PlayerCameraManager->StartCameraShake(FireCameraShake);
+		}
+	}
+}
+

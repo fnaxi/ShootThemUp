@@ -88,7 +88,7 @@ private:
 	UFUNCTION()
 	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 	
-	/** Play danage canera shake. */
+	/** Play damage camera shake. */
 	void PlayCameraShake();
 
 };

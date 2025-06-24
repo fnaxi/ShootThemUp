@@ -39,7 +39,7 @@ public:
 	bool GetCurrentWeaponUIData(FWeaponUIData& OutUIData) const;
 	bool GetCurrentWeaponAmmoData(FAmmoData& OutAmmoData) const;
 	
-	/** Add clips amount to choosen weapon if possible, returns false if no. */
+	/** Add clips amount to chosen weapon if possible, returns false if no. */
 	bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
 	
 	/** Checks is current weapon fires now or no. */
@@ -66,20 +66,20 @@ protected:
 	
 	/** Animation montage to play when equipping new weapon. */
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
-	UAnimMontage* EquipAnimMontage;
+	TObjectPtr<UAnimMontage> EquipAnimMontage;
 	
 private:
 	/** Current weapon character have. */
 	UPROPERTY()
-	ASTUBaseWeapon* CurrentWeapon = nullptr;
+	TObjectPtr<ASTUBaseWeapon> CurrentWeapon;
 
 	/** Weapons the character have. */
 	UPROPERTY()
-	TArray<ASTUBaseWeapon*> Weapons;
+	TArray<TObjectPtr<ASTUBaseWeapon>> Weapons;
 
 	/** Reload animation montage to use with currently equipped weapon. */
 	UPROPERTY()
-	UAnimMontage* CurrentReloadAnimMontage = nullptr;
+	TObjectPtr<UAnimMontage> CurrentReloadAnimMontage;
 
 	/** An index of weapon that is current one now. */
 	int32 CurrentWeaponIndex = 0;

@@ -25,7 +25,7 @@ public:
 protected:
 	/** An FX component for the rifle. */
 	UPROPERTY(VisibleAnywhere, Category = "VFX")
-	class USTUWeaponFXComponent* WeaponFXComponent;
+	TObjectPtr<class USTUWeaponFXComponent> WeaponFXComponent;
 	
 	/** Time between shots when fire button is hold. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -33,7 +33,11 @@ protected:
 
 	/** A spread of the bullets in a cone. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float BulletSpread = 1.5f;
+	float BaseBulletSpread = 1.5f;
+
+	/** Controls a multiplier to spread when character has low health. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FVector2D LowHealthSpreadMultiplier = FVector2D(1.0f, 5.0f);
 	
 	/** Damage this weapon makes. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

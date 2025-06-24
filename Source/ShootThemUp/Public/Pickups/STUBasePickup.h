@@ -21,7 +21,7 @@ public:
 protected:
 	/** Collision for this pickup. Character will pick this pickup when overlap that collision. */
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	class USphereComponent* CollisionComponent;
+	TObjectPtr<class USphereComponent> CollisionComponent;
 
 	/** A time to spawn this pickup again after it was taken. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")

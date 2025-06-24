@@ -47,7 +47,7 @@ public:
 protected:
 	/** The mesh of that weapon. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	USkeletalMeshComponent* WeaponMesh;
+	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
 
 	/** A socket of muzzle. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
@@ -68,6 +68,10 @@ protected:
 	/** FX for the muzzle. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
 	class UNiagaraSystem* MuzzleFX;
+
+	/** VFX camera shake to play on firing. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	TSubclassOf<UCameraShakeBase> FireCameraShake;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -108,6 +112,9 @@ protected:
 	/** Spawn niagara FX at muzzle location. */
 	class UNiagaraComponent* SpawnMuzzleFX();
 
+	/** Plays VFX fire camera shake. */
+	void PlayFireCameraShake();
+	
 private:
 	/** Ammo that is used by weapon. */
 	FAmmoData CurrentAmmo;

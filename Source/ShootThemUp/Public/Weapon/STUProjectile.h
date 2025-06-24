@@ -24,15 +24,15 @@ public:
 protected:
 	/** VFX component for this projectile. */
 	UPROPERTY(VisibleAnywhere, Category = "VFX")
-	class USTUWeaponFXComponent* WeaponFXComponent;
+	TObjectPtr<class USTUWeaponFXComponent> WeaponFXComponent;
 	
 	/** A collision of this projectile. */
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	class USphereComponent* CollisionComponent;
+	TObjectPtr<class USphereComponent> CollisionComponent;
 
 	/** Movement component. */
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	class UProjectileMovementComponent* MovementComponent;
+	TObjectPtr<class UProjectileMovementComponent> MovementComponent;
 	
 	/** Radius of damage sphere. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")

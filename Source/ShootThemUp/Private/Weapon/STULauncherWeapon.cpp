@@ -13,7 +13,7 @@ void ASTULauncherWeapon::StartFire()
 void ASTULauncherWeapon::MakeShoot()
 {
 	if (!GetWorld() || IsAmmoEmpty()) return;
-
+	
 	FVector TraceStart, TraceEnd;
 	if (!GetTraceData(TraceStart, TraceEnd)) return;
 
@@ -35,5 +35,7 @@ void ASTULauncherWeapon::MakeShoot()
 
 	DecreaseAmmo();
 	SpawnMuzzleFX();
+
+	PlayFireCameraShake();
 }
 
